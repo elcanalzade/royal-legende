@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELCAN CASINO - ULTIMATE EMPIRE v3</title>
+    <title>ELCAN CASINO - SUPREME EMPIRE</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
     <style>
         :root { --neon-blue: #00f2ff; --neon-purple: #bc13fe; --gold: #ffd700; --bg: #050505; }
         body { background: var(--bg); color: white; font-family: 'Orbitron', sans-serif; margin: 0; overflow-x: hidden; text-align: center; }
         
-        /* Pul Yağışı Fonu */
-        #money-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5; }
+        /* Matrix/Dollar Yağışı */
+        #money-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.6; }
 
-        .app-container { max-width: 450px; margin: 10px auto; padding: 15px; border: 3px solid var(--neon-purple); border-radius: 30px; box-shadow: 0 0 20px var(--neon-purple); background: rgba(10, 10, 10, 0.95); }
+        /* Nəhəng Jackpot */
+        #jackpot-container { background: linear-gradient(90deg, #000, #222, #000); padding: 15px; border-bottom: 2px solid var(--gold); margin-bottom: 10px; box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3); }
+        #jp-val { font-size: 32px; font-weight: 900; color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+
+        .app-container { max-width: 450px; margin: 0 auto; padding: 15px; border: 3px solid var(--neon-purple); border-radius: 30px; box-shadow: 0 0 25px var(--neon-purple); background: rgba(10, 10, 10, 0.98); }
         
         /* 4 Çarxlı Slot */
-        .slot-box { display: flex; gap: 10px; justify-content: center; margin: 20px 0; background: #000; padding: 15px; border-radius: 20px; border: 2px solid var(--neon-blue); }
-        .reel { width: 75px; height: 100px; background: #1a1a1a; border: 1px solid #333; font-size: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; transition: 0.1s; }
+        .slot-box { display: flex; gap: 8px; justify-content: center; margin: 15px 0; background: #000; padding: 12px; border-radius: 20px; border: 2px solid var(--neon-blue); }
+        .reel { width: 70px; height: 95px; background: #1a1a1a; border: 1px solid #333; font-size: 40px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
 
         .btn { width: 100%; padding: 15px; margin: 8px 0; border: none; border-radius: 50px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn-spin { background: linear-gradient(to bottom, var(--gold), #b8860b); color: #000; font-size: 18px; }
+        .btn-spin { background: linear-gradient(to bottom, var(--gold), #b8860b); color: #000; font-size: 18px; box-shadow: 0 0 10px var(--gold); }
         
         /* Canlı Lenta (0.5x Sürət) */
-        .ticker-wrap { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.85); overflow: hidden; height: 35px; border-top: 1px solid var(--neon-blue); z-index: 100; }
-        .ticker { display: inline-block; white-space: nowrap; animation: ticker 80s linear infinite; color: var(--neon-blue); font-size: 13px; line-height: 35px; }
+        .ticker-wrap { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.9); height: 35px; border-top: 1px solid var(--neon-blue); z-index: 100; overflow: hidden; }
+        .ticker { display: inline-block; white-space: nowrap; animation: ticker 120s linear infinite; color: var(--neon-blue); font-size: 13px; line-height: 35px; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         /* Modallar */
@@ -31,12 +35,14 @@
         input { width: 85%; padding: 14px; margin: 10px; border-radius: 12px; border: 1px solid var(--neon-blue); background: #000; color: #fff; text-align: center; font-family: 'Orbitron'; }
 
         /* Admin Panel */
-        #admin-panel { overflow-y:auto; text-align: left; background: #0a0a0a; border: 4px solid red; }
-        .admin-item { border-bottom: 1px solid #333; padding: 10px; font-size: 12px; }
-        .admin-btn { padding: 5px 10px; background: green; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        #admin-panel { overflow-y:auto; text-align: left; background: #080808; border: 4px solid red; }
+        .user-card { border: 1px solid #444; padding: 12px; margin: 8px 0; border-radius: 15px; background: #151515; }
+        .admin-btns { display: flex; gap: 5px; margin-top: 10px; }
+        .adm-btn-add { background: #28a745; color: white; border: none; padding: 8px; border-radius: 5px; flex: 1; cursor: pointer; }
+        .adm-btn-del { background: #dc3545; color: white; border: none; padding: 8px; border-radius: 5px; flex: 1; cursor: pointer; }
 
-        /* Fake Notifications */
-        #fake-notify { position: fixed; top: 20px; right: -300px; background: var(--neon-blue); color: #000; padding: 10px 20px; border-radius: 10px; font-weight: bold; transition: 1s; z-index: 3000; font-size: 12px; }
+        /* Fake Notifications (Social Proof) */
+        #fake-notify { position: fixed; top: 80px; left: -350px; background: rgba(0, 242, 255, 0.9); color: #000; padding: 12px; border-radius: 0 15px 15px 0; font-weight: bold; transition: 1s; z-index: 3000; font-size: 12px; border-left: 5px solid #fff; }
     </style>
 </head>
 <body>
@@ -44,84 +50,83 @@
 <canvas id="money-canvas"></canvas>
 <div id="fake-notify"></div>
 
+<div id="jackpot-container">
+    <div style="font-size: 12px; color: var(--gold);">GLOBAL JACKPOT</div>
+    <div id="jp-val">45,892.45</div>
+</div>
+
 <div id="entry-wheel-modal" class="modal" style="display: flex;">
-    <h2 style="color:var(--gold)">GİRİŞ BONUSU!</h2>
-    <div id="wheel-visual" style="width:200px; height:200px; border-radius:50%; border:5px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:40px; margin:20px 0; transition: 4s cubic-bezier(0.1, 0, 0.1, 1);">🎡</div>
-    <button class="btn btn-spin" onclick="spinEntryWheel()">BONUS ÜÇÜN FIRLAT</button>
+    <h1 style="color:var(--gold); margin-bottom: 0;">GİRİŞ BONUSU</h1>
+    <p style="font-size: 12px;">Gündəlik fırlatma şansın!</p>
+    <div id="wheel-visual" style="width:220px; height:220px; border-radius:50%; border:8px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:50px; margin:20px 0; transition: 4s cubic-bezier(0.1, 0, 0.1, 1); background: radial-gradient(#333, #000);">🎡</div>
+    <button class="btn btn-spin" onclick="spinEntryWheel()">BONUSU GÖTÜR</button>
 </div>
 
 <div id="reg-modal" class="modal">
-    <h2 style="color:var(--neon-blue)">QEYDİYYAT</h2>
+    <h2 style="color:var(--neon-blue)">HESAB YARAT</h2>
+    <p style="font-size: 10px; color: var(--gold);">Qeydiyyatdan keçən hər kəsə 5 AZN Bonus!</p>
     <input type="text" id="reg-name" placeholder="Ad Soyad">
-    <input type="tel" id="reg-phone" placeholder="Telefon (050...)">
-    <button class="btn btn-spin" onclick="completeRegistration()">BAŞLA (+5 AZN HƏDİYYƏ)</button>
+    <input type="tel" id="reg-phone" placeholder="Telefon (məs: 0501234567)">
+    <button class="btn btn-spin" onclick="completeRegistration()">DAXİL OL</button>
 </div>
 
 <div id="admin-panel" class="modal">
-    <h2 style="color:red; text-align: center;">🚨 İMPERATOR PANELİ 🚨</h2>
-    <div id="admin-content" style="width:100%; max-height: 70vh; overflow-y: auto;"></div>
-    <button class="btn" style="background:gray" onclick="closeAdmin()">BAĞLA</button>
+    <h2 style="color:red; text-align: center;">🚨 İMPERATOR İDARƏETMƏ 🚨</h2>
+    <div id="admin-stats" style="font-size: 12px; color: #aaa; margin-bottom: 10px; padding: 5px;"></div>
+    <div id="admin-content" style="width:100%; max-height: 65vh; overflow-y: auto;"></div>
+    <button class="btn" style="background:gray" onclick="closeAdmin()">PANELİ BAĞLA</button>
 </div>
 
 <div class="app-container">
-    <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--gold);">
-        <span>JACKPOT: <span id="jp-val">45,892.45</span> AZN</span>
+    <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--neon-blue); margin-bottom: 10px;">
         <span>ONLAYN: <span id="online-val">5068</span></span>
+        <span style="color: var(--gold);">VIP GHOST MODE</span>
     </div>
 
-    <div style="margin:10px 0;">
-        <div style="font-size:12px; color:var(--neon-blue)">XOŞ GƏLDİN, <span id="u-display">Müştəri</span></div>
-        <div style="font-size:25px; font-weight:900;">BALANS: <span id="bal-val">0.00</span> AZN</div>
+    <div style="margin-bottom: 15px;">
+        <div style="font-size:14px;">XOŞ GƏLDİN, <span id="u-display" style="color: var(--neon-blue);">...</span></div>
+        <div style="font-size:28px; font-weight:900; letter-spacing: 2px;">BALANS: <span id="bal-val">0.00</span> AZN</div>
     </div>
 
     <div class="slot-box">
-        <div id="r1" class="reel">🍏</div>
-        <div id="r2" class="reel">🍏</div>
-        <div id="r3" class="reel">🍏</div>
-        <div id="r4" class="reel">🍏</div>
+        <div id="r1" class="reel">🍒</div>
+        <div id="r2" class="reel">💎</div>
+        <div id="r3" class="reel">7️⃣</div>
+        <div id="r4" class="reel">🍎</div>
     </div>
 
     <button class="btn btn-spin" onclick="spinSlot()">FIRLAT (1 - 500 AZN)</button>
 
-    <div style="display:flex; gap:5px;">
-        <button class="btn" style="background:#000; color:#fff; border:1px solid #ff0050; font-size:10px;" onclick="window.open('https://www.tiktok.com/@elcan.alzade3')">TIKTOK (ÇEK AT)</button>
-        <button class="btn" style="background:#f3ba2f; color:#000; font-size:10px;" onclick="copyBinance()">BINANCE (KOPYALA)</button>
-    </div>
-    
-    <div style="display:flex; gap:5px;">
-        <button class="btn" style="background:#28a745; color:#fff; font-size:10px;" onclick="showDeposit()">PUL YÜKLƏ (KART)</button>
-        <button class="btn" style="background:#fff; color:#000; font-size:10px;" onclick="showWithdraw()">PUL ÇIXAR (MİN 30)</button>
+    <div style="font-size: 10px; color: var(--gold); margin: 10px 0; border: 1px dashed var(--gold); padding: 5px;">
+        DƏVƏT LİNKİN: <span id="ref-link">elcan-casino.com/?ref=...</span>
     </div>
 
-    <div onclick="openAdmin()" style="cursor:pointer; font-size:20px; margin-top:10px;">🚨</div>
+    <div style="display:flex; gap:8px;">
+        <button class="btn" style="background:#ff0050; color:#fff; font-size:11px;" onclick="window.open('https://www.tiktok.com/@elcan.alzade3')">TIKTOK (ÇEK AT)</button>
+        <button class="btn" style="background:#f3ba2f; color:#000; font-size:11px;" onclick="copyBinance()">BINANCE (KOPYALA)</button>
+    </div>
+    
+    <button class="btn" style="background:#fff; color:#000;" onclick="showWithdraw()">PUL ÇIXARIŞI (MİN 30 AZN)</button>
+
+    <div onclick="openAdmin()" style="cursor:pointer; font-size:25px; margin-top:15px; filter: drop-shadow(0 0 5px red);">🚨</div>
 </div>
 
 <div class="ticker-wrap"><div class="ticker" id="win-ticker"></div></div>
 
-<div id="dep-modal" class="modal">
-    <h3>PUL YÜKLƏ</h3>
-    <input type="number" id="dep-amount" placeholder="Məbləğ (AZN)">
-    <input type="text" id="dep-card" placeholder="Kart Nömrəniz">
-    <button class="btn btn-spin" onclick="processDeposit()">YÜKLƏ</button>
-    <button class="btn" onclick="this.parentElement.style.display='none'">İPTAL</button>
-</div>
-
 <div id="wit-modal" class="modal">
-    <h3>PUL ÇIXARIŞI</h3>
-    <input type="number" id="wit-amount" placeholder="Məbləğ (Min 30)">
-    <input type="text" id="wit-card" placeholder="Kart/Hesab Məlumatı">
-    <button class="btn btn-spin" onclick="processWithdraw()">ÇIXARIŞ ET</button>
-    <button class="btn" onclick="this.parentElement.style.display='none'">İPTAL</button>
+    <h3 style="color: var(--neon-blue);">PUL ÇIXARIŞI</h3>
+    <p style="font-size: 11px;">Məbləğ 24 saat ərzində kartınıza yüklənəcək.</p>
+    <input type="number" id="wit-amount" placeholder="Məbləğ (Min 30 AZN)">
+    <input type="text" id="wit-card" placeholder="Kart nömrəsi (16 rəqəm)">
+    <button class="btn btn-spin" onclick="processWithdraw()">TƏSDİQLƏ</button>
+    <button class="btn" style="background: #333;" onclick="this.parentElement.style.display='none'">GERİ</button>
 </div>
-
-<audio id="snd-spin" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
-<audio id="snd-win" src="https://www.soundjay.com/misc/sounds/magic-chime-01.mp3"></audio>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
 <script>
-    // Firebase Beyin Kodu
+    // Firebase Konfiqurasiyası
     const firebaseConfig = {
       apiKey: "AIzaSyBKGAVyVRnkTLgcv8c1D3G_HRwA8GwgcmQ",
       authDomain: "royal-legend-pro-574d5.firebaseapp.com",
@@ -135,173 +140,191 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let user = null;
-    const items = ["🍒", "🍋", "🍏", "7️⃣", "💎", "🍇", "🍉"];
+    const items = ["🍒", "🍋", "🍏", "7️⃣", "💎", "🍉", "🔔"];
 
-    // 1. Bonus Çarxı
+    // Gündəlik Bonus Çarxı
     function spinEntryWheel() {
         let w = document.getElementById('wheel-visual');
         w.style.transform = "rotate(3600deg)";
         setTimeout(() => {
-            alert("Təbriklər! 2 AZN Bonus qazandın!");
+            alert("Uğurlu fırlatma! 2 AZN Bonus balansınıza əlavə edildi!");
             document.getElementById('entry-wheel-modal').style.display = 'none';
             document.getElementById('reg-modal').style.display = 'flex';
         }, 4000);
     }
 
-    // 2. Qeydiyyat
+    // Qeydiyyat Sistemi
     function completeRegistration() {
         let name = document.getElementById('reg-name').value;
         let phone = document.getElementById('reg-phone').value;
-        if(!name || !phone) return alert("Məlumatları doldurun!");
+        if(!name || phone.length < 10) return alert("Düzgün məlumat daxil edin!");
 
         db.ref('users/' + phone).once('value', s => {
             if(s.exists()) {
                 user = s.val();
             } else {
-                user = { name: name, phone: phone, balance: 7.0, spins: 0, ref: phone };
+                user = { name: name, phone: phone, balance: 7.0, spins: 0, regDate: new Date().toLocaleDateString() };
                 db.ref('users/' + phone).set(user);
             }
             document.getElementById('reg-modal').style.display = 'none';
-            startSystem();
+            initApp();
         });
     }
 
-    function startSystem() {
+    function initApp() {
         document.getElementById('u-display').innerText = user.name;
+        document.getElementById('ref-link').innerText = "elcan-casino.com/?ref=" + user.phone.slice(-4);
         updateUI();
-        startJP();
-        fakeStats();
-        loadTicker();
-        setInterval(fakeNotify, 10000);
+        startJackpotEffect();
+        startOnlineSync();
+        loadWinningTicker();
+        setInterval(showSocialProof, 12000);
     }
 
     function updateUI() {
         document.getElementById('bal-val').innerText = user.balance.toFixed(2);
     }
 
-    // 4 Çarxlı Slot + Alqoritm
+    // Slot Mexanikası & Hiyləli Alqoritm
     function spinSlot() {
-        let bet = prompt("Mərc məbləği (1-500 AZN):", "10");
+        let bet = prompt("Mərc (1-500 AZN):", "10");
         bet = parseFloat(bet);
-        if(isNaN(bet) || bet < 1 || bet > 500) return alert("Düzgün mərc yazın!");
+        if(isNaN(bet) || bet < 1 || bet > 500) return alert("Limit: 1 - 500 AZN");
         if(user.balance < bet) return alert("Balans yetərli deyil!");
 
         user.balance -= bet;
         user.spins++;
         updateUI();
-        document.getElementById('snd-spin').play();
 
         let count = 0;
-        let iv = setInterval(() => {
+        let interval = setInterval(() => {
             for(let i=1; i<=4; i++) document.getElementById('r'+i).innerText = items[Math.floor(Math.random()*items.length)];
             count++;
-            if(count > 20) {
-                clearInterval(iv);
-                // Şans: İlk 3 spin 80%, sonra 20%
-                let chance = user.spins <= 3 ? 0.8 : 0.2;
-                if(Math.random() < chance) {
+            if(count > 25) {
+                clearInterval(interval);
+                // İlk 3 fırlatma 80% uduş, sonra 20%
+                let winChance = user.spins <= 3 ? 0.8 : 0.2;
+                if(Math.random() < winChance) {
                     let winSym = items[Math.floor(Math.random()*items.length)];
                     for(let i=1; i<=4; i++) document.getElementById('r'+i).innerText = winSym;
-                    user.balance += bet * 4;
-                    document.getElementById('snd-win').play();
-                    alert("CONGRATULATIONS! 🎉");
+                    user.balance += bet * 5;
+                    alert("TƏBRİKLƏR! BÖYÜK UDUŞ! 🎉");
                 }
                 db.ref('users/' + user.phone).update(user);
                 updateUI();
-                // Adminə bildiriş
-                db.ref('logs').push({ name: user.name, bet: bet, balance: user.balance, time: new Date().toLocaleTimeString() });
+                // Admin Real-vaxt izləmə üçün log
+                db.ref('activity').push({ name: user.name, bet: bet, result: user.balance });
             }
-        }, 100);
+        }, 80);
     }
 
-    // Admin Panel (🚨)
+    // Təkmilləşdirilmiş Admin Panel
     function openAdmin() {
-        if(prompt("Şifrə:") === "1907") {
+        if(prompt("ADMİN ŞİFRƏSİ:") === "1907") {
             document.getElementById('admin-panel').style.display = 'flex';
-            loadAdmin();
+            syncAdmin();
         }
     }
     function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
 
-    function loadAdmin() {
+    function syncAdmin() {
         db.ref('users').on('value', s => {
-            let data = s.val();
-            let html = "<h3>İstifadəçilər</h3>";
-            for(let id in data) {
-                html += `<div class="admin-item">
-                    <b>${data[id].name}</b> (${id}) <br> Balans: ${data[id].balance} AZN 
-                    <button class="admin-btn" onclick="addBal('${id}')">PUL ARTIR</button>
+            let users = s.val();
+            let html = "";
+            let totalUsers = 0;
+            for(let id in users) {
+                totalUsers++;
+                html += `
+                <div class="user-card">
+                    <b>${users[id].name}</b> (${id}) <br>
+                    Balans: <span style="color:var(--neon-blue)">${users[id].balance.toFixed(2)} AZN</span>
+                    <div class="admin-btns">
+                        <button class="adm-btn-add" onclick="modifyUser('${id}', 50)">+50 AZN</button>
+                        <button class="adm-btn-add" onclick="modifyUser('${id}', 500)">+500 AZN</button>
+                        <button class="adm-btn-del" onclick="deleteUser('${id}')">İSTİFADƏÇİNİ SİL</button>
+                    </div>
                 </div>`;
             }
-            // Çıxarışlar və Depozitlər
-            db.ref('requests').once('value', r => {
-                let reqs = r.val();
-                html += "<h3>Tələblər (Depozit/Çıxarış)</h3>";
-                for(let k in reqs) {
-                    html += `<div class="admin-item" style="background:#222">
-                        ${reqs[k].type}: ${reqs[k].amount} AZN <br> User: ${reqs[k].name} (${reqs[k].phone}) <br> Kart: ${reqs[k].card}
-                        <button onclick="db.ref('requests/${k}').remove()">SİL</button>
+            document.getElementById('admin-content').innerHTML = html;
+            document.getElementById('admin-stats').innerText = "Cəmi İstifadəçi: " + totalUsers;
+        });
+        
+        // Çıxarış tələblərini də bura əlavə edirik
+        db.ref('withdrawals').on('value', s => {
+            let wits = s.val();
+            if(wits) {
+                let h = "<h3 style='color:orange'>ÇIXARIŞ TƏLƏBLƏRİ</h3>";
+                for(let k in wits) {
+                    h += `<div class="user-card" style="border-color:orange">
+                        ${wits[k].name} (${wits[k].phone}) <br>
+                        Məbləğ: ${wits[k].amount} AZN <br> Kart: ${wits[k].card}
+                        <button class="adm-btn-del" onclick="db.ref('withdrawals/${k}').remove()">TAMAMLANDI OLARAQ SİL</button>
                     </div>`;
                 }
-                document.getElementById('admin-content').innerHTML = html;
-            });
+                document.getElementById('admin-content').innerHTML += h;
+            }
         });
     }
 
-    function addBal(phone) {
-        let amt = parseFloat(prompt("Nə qədər artırılsın?"));
-        if(amt) db.ref('users/'+phone+'/balance').transaction(b => b + amt);
-    }
+    function modifyUser(id, amt) { db.ref('users/'+id+'/balance').transaction(b => b + amt); }
+    function deleteUser(id) { if(confirm("Bu istifadəçini tamamilə silmək istəyirsiz?")) db.ref('users/'+id).remove(); }
 
-    // Maliyyə
+    // Ödəniş və Çıxarış
     function copyBinance() {
         navigator.clipboard.writeText("TJQbpsPqD9up2iwHUCLZHDxs1g67uq3mrQ");
         alert("Binance TRC20 Ünvanı Kopyalandı!");
     }
 
-    function showDeposit() { document.getElementById('dep-modal').style.display = 'flex'; }
-    function processDeposit() {
-        let a = document.getElementById('dep-amount').value;
-        let c = document.getElementById('dep-card').value;
-        db.ref('requests').push({ type: "DEPOZİT", name: user.name, phone: user.phone, amount: a, card: c });
-        alert("Depozit sorğusu adminə göndərildi. TikTok-dan çek atmağı unutmayın!");
-        document.getElementById('dep-modal').style.display = 'none';
-    }
-
     function showWithdraw() { document.getElementById('wit-modal').style.display = 'flex'; }
     function processWithdraw() {
         let a = document.getElementById('wit-amount').value;
-        if(a < 30) return alert("Minimum 30 AZN!");
         let c = document.getElementById('wit-card').value;
-        db.ref('requests').push({ type: "ÇIXARIŞ", name: user.name, phone: user.phone, amount: a, card: c });
-        alert("Çıxarış sorğusu qəbul edildi. 24 saat ərzində yüklənəcək.");
+        if(a < 30 || c.length < 16) return alert("Minimum 30 AZN və düzgün kart yazın!");
+        
+        db.ref('withdrawals').push({ name: user.name, phone: user.phone, amount: a, card: c });
+        alert("Sorğunuz qəbul edildi! 24 saat ərzində admin tərəfindən təsdiqlənəcək.");
         document.getElementById('wit-modal').style.display = 'none';
     }
 
-    // Fake Effektlər
-    function startJP() { setInterval(() => { document.getElementById('jp-val').innerText = (parseFloat(document.getElementById('jp-val').innerText) + 0.05).toFixed(2); }, 2000); }
-    function fakeStats() { setInterval(() => { document.getElementById('online-val').innerText = 5000 + Math.floor(Math.random()*100); }, 4000); }
-    function loadTicker() {
-        let t = "";
-        for(let i=0; i<40; i++) t += ` • İstifadəçi 0${Math.floor(Math.random()*99)}*** uddu: ${Math.floor(Math.random()*1000)} AZN | `;
-        document.getElementById('win-ticker').innerText = t;
-    }
-    function fakeNotify() {
-        let n = document.getElementById('fake-notify');
-        n.innerText = "İstifadəçi " + Math.floor(Math.random()*99) + " indicə " + Math.floor(Math.random()*200) + " AZN uddu!";
-        n.style.right = "20px";
-        setTimeout(() => n.style.right = "-300px", 4000);
+    // Vizual Effektlər
+    function startJackpotEffect() {
+        setInterval(() => {
+            let current = parseFloat(document.getElementById('jp-val').innerText);
+            document.getElementById('jp-val').innerText = (current + (Math.random() * 0.1)).toFixed(2);
+        }, 1500);
     }
 
-    // Pul Yağışı
+    function startOnlineSync() {
+        setInterval(() => {
+            document.getElementById('online-val').innerText = 5000 + Math.floor(Math.random() * 200);
+        }, 3500);
+    }
+
+    function loadWinningTicker() {
+        let content = "";
+        for(let i=0; i<40; i++) {
+            content += ` • İstifadəçi 05${Math.floor(Math.random()*9)}***${Math.floor(Math.random()*99)} uddu: ${Math.floor(Math.random()*1200)} AZN | `;
+        }
+        document.getElementById('win-ticker').innerText = content;
+    }
+
+    function showSocialProof() {
+        let n = document.getElementById('fake-notify');
+        let names = ["Elvin", "Anar", "Rauf", "Aysel", "Samir", "Leyla", "Vüqar"];
+        n.innerText = names[Math.floor(Math.random()*names.length)] + " indicə " + (Math.floor(Math.random()*450)+50) + " AZN uddu!";
+        n.style.left = "0px";
+        setTimeout(() => n.style.left = "-350px", 4000);
+    }
+
+    // Pul Yağışı Animasiyası
     const canvas = document.getElementById('money-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     let coins = [];
     function draw() {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = "gold";
-        if(coins.length < 40) coins.push({x:Math.random()*canvas.width, y:0, s:Math.random()*3+1});
+        ctx.fillStyle = "gold"; ctx.font = "14px Arial";
+        if(coins.length < 50) coins.push({x:Math.random()*canvas.width, y:-20, s:Math.random()*2+1});
         coins.forEach((c,i) => { ctx.fillText("$", c.x, c.y); c.y += c.s; if(c.y > canvas.height) coins.splice(i,1); });
         requestAnimationFrame(draw);
     }
